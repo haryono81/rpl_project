@@ -1,0 +1,25 @@
+{
+  "name": "shared-models",
+  "version": "1.0.0",
+  "description": "Shared TypeScript models for frontend and backend",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "mysql2": "^3.14.1",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.22"
+  }
+}
