@@ -2,7 +2,14 @@
   "name": "frontend",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "type": "module",  
+  "main": "dist/index.js", 
+  "types": "dist/index.d.ts",   
+  "exports": {
+    ".": {
+      "import": "./dist/my-react-lib.es.js",
+      "require": "./dist/my-react-lib.umd.js"
+    }},
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -26,9 +33,6 @@
     "typescript-eslint": "^8.26.1",
     "vite": "^6.3.1"
   },
-  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
-  "main": "eslint.config.js",
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": ""
 }

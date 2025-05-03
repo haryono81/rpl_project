@@ -1,12 +1,23 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { HttpService, Employee } from '../HttpService';
+import { Employee } from "shared-models";
+import { HttpService } from "frontend";
 
-global.fetch = vi.fn();
+beforeEach(() => {
+  vi.clearAllMocks();
+});
 
 const mockEmployees: Employee[] = [
-  { id: 1, name: 'Alice', position: 'Engineer' },
-  { id: 2, name: 'Bob', position: 'Manager' }
+  { id: 1, name: 'Alice', role: 'Engineer' },
+  { id: 2, name: 'Bob', role: 'Manager' }
 ];
+
+// Mocking the global fetch function
+globalThis.fetch = vi.fn(() =>
+  Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve({ message: 'success' }),
+  })
+) as any;
 
 describe('HttpService', () => {
   beforeEach(() => {
@@ -16,7 +27,7 @@ describe('HttpService', () => {
   it('should fetch all employees', async () => {
     (fetch as any).mockResolvedValueOnce({
       ok: true,
-      json: async () => mockEmployees,
+      json: () => Promise.resolve(mockEmployees), // Corrected here
     });
 
     const result = await HttpService.getAll();
@@ -25,11 +36,11 @@ describe('HttpService', () => {
   });
 
   it('should create a new employee', async () => {
-    const newEmployee: Employee = { name: 'Charlie', position: 'Designer' };
+    const newEmployee: Employee = { id: 1, name: 'Charlie', role: 'Designer' };
 
     (fetch as any).mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ ...newEmployee, id: 3 }),
+      json: () => Promise.resolve({ ...newEmployee, id: 3 }), // Return mock employee with id
     });
 
     const result = await HttpService.create(newEmployee);
@@ -38,21 +49,30 @@ describe('HttpService', () => {
       'http://localhost:3000/api/employees',
       expect.objectContaining({
         method: 'POST',
-        body: JSON.stringify(newEmployee),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newEmployee), // Ensure body is correct
       })
     );
   });
 
   it('should update an employee', async () => {
-    const updatedEmployee: Employee = { name: 'Alice Updated', position: 'Lead' };
+    const updatedEmployee: Employee = { id: 1, name: 'Alice Updated', role: 'Lead' };
 
     (fetch as any).mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ id: 1, ...updatedEmployee }),
+      json: () => Promise.resolve({ ...updatedEmployee }),
     });
 
     const result = await HttpService.update(1, updatedEmployee);
-    expect(result).toEqual({ id: 1, ...updatedEmployee });
+    expect(result).toEqual({ ...updatedEmployee });
+    expect(fetch).toHaveBeenCalledWith(
+      'http://localhost:3000/api/employees/1',
+      expect.objectContaining({
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedEmployee), // Ensure body is correct
+      })
+    );
   });
 
   it('should delete an employee', async () => {

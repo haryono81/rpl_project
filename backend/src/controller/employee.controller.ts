@@ -22,8 +22,8 @@ export const createEmployee = async (req: Request, res: Response) => {
 };
 
 export const updateEmployee = async (req: Request, res: Response) => {
-  await repo.update(req.params.id, req.body);
-  res.sendStatus(204);
+  const result = await repo.update(req.params.id, req.body);
+  res.json(result);
 };
 
 export const deleteEmployee = async (req: Request, res: Response) => {

@@ -25,6 +25,7 @@
 Untuk unit test:
 1. Buka terminal baru masuk ke frontend-test
     - npm install
+    - npm link shared-models frontend
     - npm run test
 
 
