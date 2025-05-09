@@ -1,15 +1,38 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:5173",
-            "webRoot": "${workspaceFolder}/frontend"
-        }
+      {
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/unittests/frontend-test",
+        "name": "Debug HttpService.test.ts",
+        "program": "${workspaceFolder}/unittests/frontend-test/node_modules/vitest/vitest.mjs",
+        "args": [
+            "run",
+            "${file}",
+            "--testNamePattern=create"
+        ],
+        "autoAttachChildProcesses": true,
+        "smartStep": true,
+        "console": "integratedTerminal"
+      }
     ]
-}
+  }
+  
+            
+
+// {
+//     // Use IntelliSense to learn about possible attributes.
+//     // Hover to view descriptions of existing attributes.
+//     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+//     "version": "0.2.0",
+//     "configurations": [
+//         {
+//             "type": "chrome",
+//             "request": "launch",
+//             "name": "Launch Chrome against localhost",
+//             "url": "http://localhost:5173",
+//             "webRoot": "${workspaceFolder}/frontend"
+//         }
+//     ]
+// }
